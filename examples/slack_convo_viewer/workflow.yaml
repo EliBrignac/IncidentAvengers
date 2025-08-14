@@ -1,0 +1,49 @@
+# Workflow configuration for Slack Conversation Viewer
+# This workflow demonstrates how to use the Slack conversation viewer tool
+
+# Define the functions (tools) that will be available
+functions:
+  # Slack conversation viewer tool
+  slack_convo_viewer:
+    _type: slack_convo_viewer  # This should match the name in SlackConvoViewerConfig
+    base_url: "https://sre-api-service-ext.bestegg.com"  # Default URL, can be overridden
+    reset_scenarios: false  # Set to true to reset scenarios before fetching
+  
+  # Optional: Keep the Wikipedia search tool as an example
+  wikipedia_search:
+    _type: wiki_search
+    max_results: 2
+
+# Configure the LLM to be used
+llms:
+  # Using NIM (NVIDIA Inference Microservice) with a powerful model
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-70b-instruct  # Using a powerful model for better understanding
+    temperature: 0.2  # Slight randomness for more natural responses
+
+# Define the workflow
+workflow:
+  # Use a ReAct agent that can reason and use tools
+  _type: react_agent
+  
+  # List all available tools
+  tool_names: 
+    - slack_convo_viewer
+    - wikipedia_search  # Optional: include other tools as needed
+  
+  # Specify which LLM to use
+  llm_name: nim_llm
+  
+  # Enable verbose output to see the agent's reasoning process
+  verbose: true
+  
+  # Set the maximum number of retries for the agent
+  parse_agent_response_max_retries: 3
+  
+  # Optional: System message to guide the agent's behavior
+  system_message: |
+    You are a helpful assistant that can retrieve and analyze Slack conversations.
+    When asked about Slack messages or conversations, use the slack_convo_viewer tool.
+    You can also answer general knowledge questions using the wikipedia_search tool.
+    Be concise and focus on providing the most relevant information.

@@ -1,0 +1,52 @@
+# Workflow configuration for DataDog RCA Tool
+# This workflow demonstrates how to use the DataDog RCA tool for root cause analysis
+
+# Define the functions (tools) that will be available
+functions:
+  # DataDog RCA tool
+  datadog_analyzer:
+    _type: datadog_rca  # This should match the name in DataDogRCAConfig
+    base_url: "https://sre-api-service-ext.bestegg.com"  # Default URL, can be overridden
+    default_scenario_id: "22222222-2222-2222-2222-222222222222"  # Default scenario ID
+    default_env: "prod"
+    window_minutes: 30
+  
+  # Optional: Keep other tools as needed
+  slack_convo_viewer:
+    _type: slack_convo_viewer
+    base_url: "https://sre-api-service-ext.bestegg.com"
+    reset_scenarios: false
+
+# Configure the LLM to be used
+llms:
+  # Using NIM (NVIDIA Inference Microservice) with a powerful model
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-70b-instruct  # Using a powerful model for better understanding
+    temperature: 0.2  # Slight randomness for more natural responses
+
+# Define the workflow
+workflow:
+  # Use a ReAct agent that can reason and use tools
+  _type: react_agent
+  
+  # List all available tools
+  tool_names: 
+    - datadog_analyzer
+    - slack_convo_viewer  # Optional: include other tools as needed
+  
+  # Specify which LLM to use
+  llm_name: nim_llm
+  
+  # Enable verbose output to see the agent's reasoning process
+  verbose: true
+  
+  # Set the maximum number of retries for the agent
+  parse_agent_response_max_retries: 3
+  
+  # Optional: System message to guide the agent's behavior
+  system_message: |
+    You are a helpful assistant that can analyze system metrics and logs using DataDog.
+    When asked about system performance, errors, or root cause analysis, use the datadog_analyzer tool.
+    You can also retrieve Slack conversations using the slack_convo_viewer tool if needed.
+    Be concise and focus on providing the most relevant information and insights.

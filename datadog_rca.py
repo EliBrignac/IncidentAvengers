@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 HACK_BASE = os.getenv("HACK_BASE", "https://sre-api-service-ext.bestegg.com")
-SCENARIO_ID = os.getenv("SCENARIO_ID", "11111111-1111-1111-1111-111111111111")  # default to your scenario
+SCENARIO_ID = os.getenv("SCENARIO_ID", "22222222-2222-2222-2222-222222222222")  # default to your scenario
 MOCK_FILE = Path("mock_datadog.json")  # local fallback file
 ENV = "prod"
 
