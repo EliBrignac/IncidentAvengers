@@ -1,0 +1,18 @@
+{
+    "scenario_id": "11111111-1111-1111-1111-111111111111",
+    "datadog_payloads": [
+      {
+        "name": "payments-api p95 latency > 800ms",
+        "tags": ["service:payments-api"],
+        "status": "Alert",
+        "monitor_id": 12345
+      },
+      {
+        "name": "payments-api 5xx rate > 3%",
+        "tags": ["service:payments-api"],
+        "status": "Alert",
+        "monitor_id": 67890
+      }
+    ]
+  }
+  
