@@ -86,6 +86,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# slack bot tokens
+slack_bot_tokens.py
+
 # C extensions
 
 # Distribution / packaging
