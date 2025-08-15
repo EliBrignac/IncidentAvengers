@@ -1,0 +1,162 @@
+{
+  "scenario_id": "77777777-7777-7777-7777-777777777777",
+  "title": "Feature flag outage",
+  "description": "Flag provider outage affecting rollout logic",
+  "services": [
+    "feature-service",
+    "flag-provider"
+  ],
+  "keywords": [
+    "SRE-2007",
+    "feature-service"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2007",
+      "fields": {
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Flag provider down"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "feature-service error spike",
+      "tags": [
+        "service:feature-service"
+      ],
+      "status": "Alert",
+      "monitor_id": 78912
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Rollout paused",
+      "user": "pm"
+    }
+  ],
+  "active_alerts": [
+    "feature errors"
+  ],
+  "impact_assessment": {
+    "blast_radius": "New features disabled",
+    "customers_impacted": true
+  },
+  "incident_steps": [
+    "Force default values",
+    "Bypass provider",
+    "Notify stakeholders"
+  ],
+  "validation_indicators": [
+    "error rate normal",
+    "features enabled"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2007"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "pm"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "New features disabled",
+              "customers_impacted": true
+            },
+            "datadog_monitors": [
+              {
+                "name": "feature-service error spike",
+                "tags": [
+                  "service:feature-service"
+                ],
+                "status": "Alert",
+                "monitor_id": 78912
+              }
+            ]
+          },
+          "incident": "Feature flag outage",
+          "keywords": [
+            "SRE-2007",
+            "feature-service"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "pm",
+              "what": "Rollout paused"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:11.582692+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:11.586972Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Feature adoption stalled; provider outage?",
+      "user": "pm"
+    },
+    {
+      "text": "Set defaults and bypass provider",
+      "user": "oncall"
+    },
+    {
+      "text": "Log SRE-2007 and communicate status",
+      "user": "alice"
+    },
+    {
+      "text": "Errors normalized after bypass",
+      "user": "pm"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "service:feature-service"
+      ],
+      "metric": "http.server.error_rate",
+      "points": [
+        [
+          1755203223,
+          0.003
+        ],
+        [
+          1755203283,
+          0.004
+        ],
+        [
+          1755203343,
+          0.007
+        ],
+        [
+          1755203403,
+          0.02
+        ],
+        [
+          1755203463,
+          0.025
+        ],
+        [
+          1755203523,
+          0.004
+        ]
+      ]
+    }
+  ]
+}

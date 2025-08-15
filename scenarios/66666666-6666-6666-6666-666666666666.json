@@ -1,0 +1,164 @@
+{
+  "scenario_id": "66666666-6666-6666-6666-666666666666",
+  "title": "Edge cache misconfiguration",
+  "description": "Bad header rule causing non-cacheable responses",
+  "services": [
+    "edge-cache",
+    "web-frontend"
+  ],
+  "keywords": [
+    "SRE-2006",
+    "edge-cache"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2006",
+      "fields": {
+        "status": {
+          "name": "Investigating"
+        },
+        "summary": "Cache miss spike"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "CDN hit ratio < 70%",
+      "tags": [
+        "service:edge-cache"
+      ],
+      "status": "Alert",
+      "monitor_id": 67891
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Hit ratio tanked after rule deploy",
+      "user": "web"
+    }
+  ],
+  "active_alerts": [
+    "cdn hit ratio"
+  ],
+  "impact_assessment": {
+    "ttfb_ms": 900,
+    "blast_radius": "Site performance",
+    "customers_impacted": true
+  },
+  "incident_steps": [
+    "Revert header rule",
+    "Purge cache",
+    "Warm key paths"
+  ],
+  "validation_indicators": [
+    "hit ratio > 90%",
+    "ttfb < 200ms"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2006"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "web"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "ttfb_ms": 900,
+              "blast_radius": "Site performance",
+              "customers_impacted": true
+            },
+            "datadog_monitors": [
+              {
+                "name": "CDN hit ratio < 70%",
+                "tags": [
+                  "service:edge-cache"
+                ],
+                "status": "Alert",
+                "monitor_id": 67891
+              }
+            ]
+          },
+          "incident": "Edge cache misconfiguration",
+          "keywords": [
+            "SRE-2006",
+            "edge-cache"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "web",
+              "what": "Hit ratio tanked after rule deploy"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:10.723314+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:10.727102Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Hit ratio 55% after header rule change",
+      "user": "web"
+    },
+    {
+      "text": "Revert header, purge caches",
+      "user": "oncall"
+    },
+    {
+      "text": "SRE-2006 for tracking; warming key paths",
+      "user": "alice"
+    },
+    {
+      "text": "Hit ratio back to 92%",
+      "user": "web"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "service:edge-cache"
+      ],
+      "metric": "cdn.hit_ratio",
+      "points": [
+        [
+          1755203223,
+          92
+        ],
+        [
+          1755203283,
+          90
+        ],
+        [
+          1755203343,
+          88
+        ],
+        [
+          1755203403,
+          70
+        ],
+        [
+          1755203463,
+          55
+        ],
+        [
+          1755203523,
+          92
+        ]
+      ]
+    }
+  ]
+}

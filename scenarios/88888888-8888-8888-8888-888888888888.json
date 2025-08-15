@@ -1,0 +1,161 @@
+{
+  "scenario_id": "88888888-8888-8888-8888-888888888888",
+  "title": "Queue dead-letter surge",
+  "description": "DLQ growing due to schema mismatch",
+  "services": [
+    "ingest-worker",
+    "schema-registry"
+  ],
+  "keywords": [
+    "SRE-2008",
+    "ingest-worker"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2008",
+      "fields": {
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Schema mismatch"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "DLQ size > 10k",
+      "tags": [
+        "service:ingest-worker"
+      ],
+      "status": "Alert",
+      "monitor_id": 89123
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "New field not backwards compatible",
+      "user": "data"
+    }
+  ],
+  "active_alerts": [
+    "dlq size"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Async enrichment",
+    "customers_impacted": false
+  },
+  "incident_steps": [
+    "Hotfix consumer",
+    "Reprocess DLQ",
+    "Add schema evolution"
+  ],
+  "validation_indicators": [
+    "DLQ < 100"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2008"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "data"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Async enrichment",
+              "customers_impacted": false
+            },
+            "datadog_monitors": [
+              {
+                "name": "DLQ size > 10k",
+                "tags": [
+                  "service:ingest-worker"
+                ],
+                "status": "Alert",
+                "monitor_id": 89123
+              }
+            ]
+          },
+          "incident": "Queue dead-letter surge",
+          "keywords": [
+            "SRE-2008",
+            "ingest-worker"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "data",
+              "what": "New field not backwards compatible"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:12.460936+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:12.463206Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "DLQ at 12k messages; schema change broke consumers",
+      "user": "data"
+    },
+    {
+      "text": "Hotfix; add schema evolution and reprocess",
+      "user": "oncall"
+    },
+    {
+      "text": "Tracking in SRE-2008",
+      "user": "alice"
+    },
+    {
+      "text": "DLQ down to 50 after reprocess",
+      "user": "data"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "queue:ingest"
+      ],
+      "metric": "queue.dlq.size",
+      "points": [
+        [
+          1755203223,
+          200
+        ],
+        [
+          1755203283,
+          500
+        ],
+        [
+          1755203343,
+          1500
+        ],
+        [
+          1755203403,
+          5000
+        ],
+        [
+          1755203463,
+          12000
+        ],
+        [
+          1755203523,
+          50
+        ]
+      ]
+    }
+  ]
+}

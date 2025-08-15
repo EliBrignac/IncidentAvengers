@@ -1,0 +1,181 @@
+{
+  "scenario_id": "22222222-2222-2222-2222-222222222222",
+  "title": "Auth service token issuance failures",
+  "description": "Spike in 401/500 due to JWT signing key rotation issue",
+  "services": [
+    "auth-service"
+  ],
+  "keywords": [
+    "SRE-2002",
+    "AUTH-33",
+    "auth-service"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2002",
+      "fields": {
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "JWT signing key mismatch"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "auth 5xx > 2%",
+      "tags": [
+        "service:auth-service"
+      ],
+      "status": "Alert",
+      "monitor_id": 23456
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "AUTH-33 might be related",
+      "user": "alice"
+    },
+    {
+      "text": "Rotated keys at 13:00Z",
+      "user": "oncall"
+    }
+  ],
+  "active_alerts": [
+    "auth 5xx"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Login",
+    "customers_impacted": true,
+    "auth_failures_per_min": 800
+  },
+  "incident_steps": [
+    "Rollback key rotation",
+    "Sync JWKS cache",
+    "Purge edge caches"
+  ],
+  "validation_indicators": [
+    "401 rate normal",
+    "login success > 99.9%"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2002"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Login",
+              "customers_impacted": true,
+              "auth_failures_per_min": 800
+            },
+            "datadog_monitors": [
+              {
+                "name": "auth 5xx > 2%",
+                "tags": [
+                  "service:auth-service"
+                ],
+                "status": "Alert",
+                "monitor_id": 23456
+              }
+            ]
+          },
+          "incident": "Auth service token issuance failures",
+          "keywords": [
+            "SRE-2002",
+            "AUTH-33",
+            "auth-service"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "AUTH-33 might be related"
+            },
+            {
+              "who": "oncall",
+              "what": "Rotated keys at 13:00Z"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:07.194457+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:07.196885Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Users report login failures since 12:55Z",
+      "user": "oncall"
+    },
+    {
+      "text": "auth-service 401s and 5xx both spiking",
+      "user": "alice"
+    },
+    {
+      "text": "Key rotation happened at 13:00Z; cache not refreshed?",
+      "user": "bob"
+    },
+    {
+      "text": "Referencing JIRA SRE-2002 and internal AUTH-33",
+      "user": "alice"
+    },
+    {
+      "text": "Invalidate JWKS cache and redeploy",
+      "user": "oncall"
+    },
+    {
+      "text": "5xx down to baseline after cache invalidate",
+      "user": "bob"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "service:auth-service"
+      ],
+      "metric": "http.server.error_rate",
+      "points": [
+        [
+          1755203223,
+          0.005
+        ],
+        [
+          1755203283,
+          0.008
+        ],
+        [
+          1755203343,
+          0.012
+        ],
+        [
+          1755203403,
+          0.02
+        ],
+        [
+          1755203463,
+          0.035
+        ],
+        [
+          1755203523,
+          0.018
+        ]
+      ]
+    }
+  ]
+}

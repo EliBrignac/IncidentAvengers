@@ -1,0 +1,683 @@
+{
+  "scenario_id": "11111111-1111-1111-1111-111111111111",
+  "title": "Payments API latency spike",
+  "description": "Elevated p95 latency and error rate in payments-api when hitting third-party gateway",
+  "services": [
+    "payments-api",
+    "gateway-client"
+  ],
+  "keywords": [
+    "SRE-2001",
+    "PAY-451",
+    "payments-api"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2001",
+      "fields": {
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Payments latency spike"
+      }
+    },
+    {
+      "key": "PAY-451",
+      "fields": {
+        "status": {
+          "name": "Investigating"
+        },
+        "summary": "Gateway timeouts"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "payments-api p95 latency > 800ms",
+      "tags": [
+        "service:payments-api"
+      ],
+      "status": "Alert",
+      "monitor_id": 12345
+    },
+    {
+      "name": "payments-api 5xx rate > 3%",
+      "tags": [
+        "service:payments-api"
+      ],
+      "status": "Alert",
+      "monitor_id": 67890
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Seeing SRE-2001 referenced in logs",
+      "user": "alice"
+    },
+    {
+      "text": "payments-api latency breaching",
+      "user": "bob"
+    },
+    {
+      "text": "Creating war room",
+      "user": "bot"
+    }
+  ],
+  "active_alerts": [
+    "payments-api p95 latency",
+    "payments-api 5xx"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Checkout",
+    "customers_impacted": true,
+    "estimated_orders_affected": 1200
+  },
+  "incident_steps": [
+    "Page oncall",
+    "Roll back recent deploy",
+    "Failover gateway"
+  ],
+  "validation_indicators": [
+    "p95 < 400ms",
+    "5xx < 0.5%",
+    "checkout success rate > 99.5%"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "All alerts recovered",
+        "type": "validation",
+        "observations": {
+          "p95_ms": 320,
+          "error_rate": 0.3
+        }
+      },
+      "received_at": "2025-08-13T19:54:44.719522+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T19:54:44.745287Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T13:22:48.345236+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-14T13:22:48.347542Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T13:38:35.035653+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-14T13:38:35.040807Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:14:23.849533+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-14T14:14:23.852237Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:15:59.542379+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "time_window": {
+            "end": "2025-08-14T14:15:59.547443+00:00",
+            "from": "2025-08-13T03:20:10.604291+00:00"
+          },
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:20:13.324794+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-14T14:20:13.330811Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:24:45.487261+00:00"
+    },
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2001",
+            "PAY-451"
+          ],
+          "impact": "elevated latency, impacting checkout/payments",
+          "owners": {
+            "primary": "alice"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Checkout",
+              "customers_impacted": true,
+              "estimated_orders_affected": 1200
+            },
+            "datadog_monitors": [
+              {
+                "name": "payments-api p95 latency > 800ms",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 12345
+              },
+              {
+                "name": "payments-api 5xx rate > 3%",
+                "tags": [
+                  "service:payments-api"
+                ],
+                "status": "Alert",
+                "monitor_id": 67890
+              }
+            ]
+          },
+          "incident": "Payments API latency spike",
+          "keywords": [
+            "SRE-2001",
+            "PAY-451",
+            "payments-api"
+          ],
+          "timeframe": {
+            "end": "2025-08-14T14:24:45.491858Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "alice",
+              "what": "Seeing SRE-2001 referenced in logs"
+            },
+            {
+              "who": "bob",
+              "what": "payments-api latency breaching"
+            },
+            {
+              "who": "bot",
+              "what": "Creating war room"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:14.926255+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:14.930486Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Heads up, checkout is slow. Anyone else seeing this?",
+      "user": "alice"
+    },
+    {
+      "text": "Graphs show p95 ~ 1.2s since 13:05Z on service=payments-api",
+      "user": "bob"
+    },
+    {
+      "text": "Recent deploy at 13:02Z touched gateway-client retry policy",
+      "user": "data"
+    },
+    {
+      "text": "JIRA? SRE-2001 opened to track. Also gateway timeouts tracked in PAY-451",
+      "user": "alice"
+    },
+    {
+      "text": "Error spikes align with external gateway 504s",
+      "user": "oncall"
+    },
+    {
+      "text": "Any active monitors? payments-api 5xx and p95 are red in Datadog",
+      "user": "bob"
+    },
+    {
+      "text": "Trying rollback of payments-api",
+      "user": "alice"
+    },
+    {
+      "text": "Post-rollback p95 trending down to 450ms",
+      "user": "oncall"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "service:payments-api"
+      ],
+      "metric": "trace.requests.p95",
+      "points": [
+        [
+          1755203223,
+          0.4
+        ],
+        [
+          1755203283,
+          0.5
+        ],
+        [
+          1755203343,
+          0.7
+        ],
+        [
+          1755203403,
+          0.9
+        ],
+        [
+          1755203463,
+          1.1
+        ],
+        [
+          1755203523,
+          1.2
+        ]
+      ]
+    },
+    {
+      "tags": [
+        "service:payments-api"
+      ],
+      "metric": "http.server.error_rate",
+      "points": [
+        [
+          1755203223,
+          0.01
+        ],
+        [
+          1755203283,
+          0.015
+        ],
+        [
+          1755203343,
+          0.02
+        ],
+        [
+          1755203403,
+          0.035
+        ],
+        [
+          1755203463,
+          0.05
+        ],
+        [
+          1755203523,
+          0.045
+        ]
+      ]
+    }
+  ]
+}

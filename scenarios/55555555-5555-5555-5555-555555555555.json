@@ -1,0 +1,168 @@
+{
+  "scenario_id": "55555555-5555-5555-5555-555555555555",
+  "title": "DB storage running hot",
+  "description": "RDS storage at 95% with high write latency",
+  "services": [
+    "accounts-db"
+  ],
+  "keywords": [
+    "SRE-2005",
+    "accounts-db"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2005",
+      "fields": {
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "RDS storage pressure"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "RDS free storage < 5%",
+      "tags": [
+        "db:accounts"
+      ],
+      "status": "Alert",
+      "monitor_id": 56789
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Snapshots growing since 10:00Z",
+      "user": "dbadmin"
+    }
+  ],
+  "active_alerts": [
+    "free storage"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Potential risk",
+    "write_latency_ms": 35,
+    "customers_impacted": false
+  },
+  "incident_steps": [
+    "Purge old snapshots",
+    "Increase storage",
+    "Enable compression"
+  ],
+  "validation_indicators": [
+    "free storage > 20%",
+    "write latency < 10ms"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2005"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "dbadmin"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Potential risk",
+              "write_latency_ms": 35,
+              "customers_impacted": false
+            },
+            "datadog_monitors": [
+              {
+                "name": "RDS free storage < 5%",
+                "tags": [
+                  "db:accounts"
+                ],
+                "status": "Alert",
+                "monitor_id": 56789
+              }
+            ]
+          },
+          "incident": "DB storage running hot",
+          "keywords": [
+            "SRE-2005",
+            "accounts-db"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "dbadmin",
+              "what": "Snapshots growing since 10:00Z"
+            }
+          ],
+          "root_cause_hypotheses": [
+            {
+              "confidence": "low",
+              "hypothesis": "DB saturation / connection pool issue"
+            }
+          ]
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:09.731914+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:09.735813Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Free storage at 4.8% on accounts-db",
+      "user": "dbadmin"
+    },
+    {
+      "text": "Write latency up 35ms, enable compression?",
+      "user": "alice"
+    },
+    {
+      "text": "Purge old snapshots and increase storage",
+      "user": "oncall"
+    },
+    {
+      "text": "Post-changes free storage 22%, latency 8ms",
+      "user": "dbadmin"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "db:accounts"
+      ],
+      "metric": "aws.rds.free_storage_space_pct",
+      "points": [
+        [
+          1755203223,
+          0.11
+        ],
+        [
+          1755203283,
+          0.09
+        ],
+        [
+          1755203343,
+          0.07
+        ],
+        [
+          1755203403,
+          0.06
+        ],
+        [
+          1755203463,
+          0.048
+        ],
+        [
+          1755203523,
+          0.22
+        ]
+      ]
+    }
+  ]
+}

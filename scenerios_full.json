@@ -1,0 +1,2179 @@
+[
+  {
+    "scenario_id": "22222222-2222-2222-2222-222222222222",
+    "title": "Auth service token issuance failures",
+    "description": "Spike in 401/500 due to JWT signing key rotation issue",
+    "services": [
+      "auth-service"
+    ],
+    "keywords": [
+      "SRE-2002",
+      "AUTH-33",
+      "auth-service"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2002",
+        "fields": {
+          "status": {
+            "name": "In Progress"
+          },
+          "summary": "JWT signing key mismatch"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "auth 5xx > 2%",
+        "tags": [
+          "service:auth-service"
+        ],
+        "status": "Alert",
+        "monitor_id": 23456
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "AUTH-33 might be related",
+        "user": "alice"
+      },
+      {
+        "text": "Rotated keys at 13:00Z",
+        "user": "oncall"
+      }
+    ],
+    "active_alerts": [
+      "auth 5xx"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Login",
+      "customers_impacted": true,
+      "auth_failures_per_min": 800
+    },
+    "incident_steps": [
+      "Rollback key rotation",
+      "Sync JWKS cache",
+      "Purge edge caches"
+    ],
+    "validation_indicators": [
+      "401 rate normal",
+      "login success > 99.9%"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2002"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Login",
+                "customers_impacted": true,
+                "auth_failures_per_min": 800
+              },
+              "datadog_monitors": [
+                {
+                  "name": "auth 5xx > 2%",
+                  "tags": [
+                    "service:auth-service"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 23456
+                }
+              ]
+            },
+            "incident": "Auth service token issuance failures",
+            "keywords": [
+              "SRE-2002",
+              "AUTH-33",
+              "auth-service"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "AUTH-33 might be related"
+              },
+              {
+                "who": "oncall",
+                "what": "Rotated keys at 13:00Z"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:07.194457+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:07.196885Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Users report login failures since 12:55Z",
+        "user": "oncall"
+      },
+      {
+        "text": "auth-service 401s and 5xx both spiking",
+        "user": "alice"
+      },
+      {
+        "text": "Key rotation happened at 13:00Z; cache not refreshed?",
+        "user": "bob"
+      },
+      {
+        "text": "Referencing JIRA SRE-2002 and internal AUTH-33",
+        "user": "alice"
+      },
+      {
+        "text": "Invalidate JWKS cache and redeploy",
+        "user": "oncall"
+      },
+      {
+        "text": "5xx down to baseline after cache invalidate",
+        "user": "bob"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "service:auth-service"
+        ],
+        "metric": "http.server.error_rate",
+        "points": [
+          [
+            1755203223,
+            0.005
+          ],
+          [
+            1755203283,
+            0.008
+          ],
+          [
+            1755203343,
+            0.012
+          ],
+          [
+            1755203403,
+            0.02
+          ],
+          [
+            1755203463,
+            0.035
+          ],
+          [
+            1755203523,
+            0.018
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "title": "Billing job missed window",
+    "description": "Cron did not execute due to scheduler drift",
+    "services": [
+      "billing-job",
+      "scheduler"
+    ],
+    "keywords": [
+      "SRE-2010",
+      "billing-job"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2010",
+        "fields": {
+          "status": {
+            "name": "To Do"
+          },
+          "summary": "Missed billing run"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "billing-job did not run",
+        "tags": [
+          "job:billing"
+        ],
+        "status": "Alert",
+        "monitor_id": 93456
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Invoices delayed",
+        "user": "finops"
+      }
+    ],
+    "active_alerts": [
+      "job missed"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Invoicing",
+      "revenue_delay_usd": 150000,
+      "customers_impacted": true
+    },
+    "incident_steps": [
+      "Run job manually",
+      "Fix scheduler drift",
+      "Add safeguard"
+    ],
+    "validation_indicators": [
+      "all invoices generated"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2010"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "finops"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Invoicing",
+                "revenue_delay_usd": 150000,
+                "customers_impacted": true
+              },
+              "datadog_monitors": [
+                {
+                  "name": "billing-job did not run",
+                  "tags": [
+                    "job:billing"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 93456
+                }
+              ]
+            },
+            "incident": "Billing job missed window",
+            "keywords": [
+              "SRE-2010",
+              "billing-job"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "finops",
+                "what": "Invoices delayed"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:14.098718+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:14.102758Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Invoices missing for yesterday",
+        "user": "finops"
+      },
+      {
+        "text": "Scheduler drifted; job missed window",
+        "user": "oncall"
+      },
+      {
+        "text": "Run manual job; create SRE-2010",
+        "user": "alice"
+      },
+      {
+        "text": "Invoices generated; revenue on track",
+        "user": "finops"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "job:billing"
+        ],
+        "metric": "jobs.run.billing.count",
+        "points": [
+          [
+            1755203223,
+            1
+          ],
+          [
+            1755203283,
+            1
+          ],
+          [
+            1755203343,
+            1
+          ],
+          [
+            1755203403,
+            0
+          ],
+          [
+            1755203463,
+            0
+          ],
+          [
+            1755203523,
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "33333333-3333-3333-3333-333333333333",
+    "title": "Kafka consumer lag on orders-stream",
+    "description": "Consumer lag increasing due to downstream DB contention",
+    "services": [
+      "orders-worker",
+      "orders-db"
+    ],
+    "keywords": [
+      "SRE-2003",
+      "orders-worker"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2003",
+        "fields": {
+          "status": {
+            "name": "Investigating"
+          },
+          "summary": "Consumer lag"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "orders-worker consumer lag > 200k",
+        "tags": [
+          "service:orders-worker"
+        ],
+        "status": "Alert",
+        "monitor_id": 34567
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "orders-stream lag climbing",
+        "user": "bob"
+      }
+    ],
+    "active_alerts": [
+      "consumer lag"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Async fulfillment",
+      "customers_impacted": false,
+      "eta_delayed_orders_min": 45
+    },
+    "incident_steps": [
+      "Scale consumers",
+      "Investigate DB locks",
+      "Enable backpressure"
+    ],
+    "validation_indicators": [
+      "lag < 5k",
+      "DB lock waits stable"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2003"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "bob"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Async fulfillment",
+                "customers_impacted": false,
+                "eta_delayed_orders_min": 45
+              },
+              "datadog_monitors": [
+                {
+                  "name": "orders-worker consumer lag > 200k",
+                  "tags": [
+                    "service:orders-worker"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 34567
+                }
+              ]
+            },
+            "incident": "Kafka consumer lag on orders-stream",
+            "keywords": [
+              "SRE-2003",
+              "orders-worker"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "bob",
+                "what": "orders-stream lag climbing"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:08.045168+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:08.049150Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Consumer lag on orders-stream approaching 250k",
+        "user": "bob"
+      },
+      {
+        "text": "orders-db lock waits up; writes delayed",
+        "user": "alice"
+      },
+      {
+        "text": "Scale workers and reduce batch size",
+        "user": "oncall"
+      },
+      {
+        "text": "SRE-2003 tracks the lag incident",
+        "user": "bob"
+      },
+      {
+        "text": "Lag receding to 4k after scale + DB tuning",
+        "user": "alice"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "topic:orders"
+        ],
+        "metric": "kafka.consumer_lag",
+        "points": [
+          [
+            1755203223,
+            15000
+          ],
+          [
+            1755203283,
+            30000
+          ],
+          [
+            1755203343,
+            120000
+          ],
+          [
+            1755203403,
+            210000
+          ],
+          [
+            1755203463,
+            250000
+          ],
+          [
+            1755203523,
+            180000
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "11111111-1111-1111-1111-111111111111",
+    "title": "Payments API latency spike",
+    "description": "Elevated p95 latency and error rate in payments-api when hitting third-party gateway",
+    "services": [
+      "payments-api",
+      "gateway-client"
+    ],
+    "keywords": [
+      "SRE-2001",
+      "PAY-451",
+      "payments-api"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2001",
+        "fields": {
+          "status": {
+            "name": "To Do"
+          },
+          "summary": "Payments latency spike"
+        }
+      },
+      {
+        "key": "PAY-451",
+        "fields": {
+          "status": {
+            "name": "Investigating"
+          },
+          "summary": "Gateway timeouts"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "payments-api p95 latency > 800ms",
+        "tags": [
+          "service:payments-api"
+        ],
+        "status": "Alert",
+        "monitor_id": 12345
+      },
+      {
+        "name": "payments-api 5xx rate > 3%",
+        "tags": [
+          "service:payments-api"
+        ],
+        "status": "Alert",
+        "monitor_id": 67890
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Seeing SRE-2001 referenced in logs",
+        "user": "alice"
+      },
+      {
+        "text": "payments-api latency breaching",
+        "user": "bob"
+      },
+      {
+        "text": "Creating war room",
+        "user": "bot"
+      }
+    ],
+    "active_alerts": [
+      "payments-api p95 latency",
+      "payments-api 5xx"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Checkout",
+      "customers_impacted": true,
+      "estimated_orders_affected": 1200
+    },
+    "incident_steps": [
+      "Page oncall",
+      "Roll back recent deploy",
+      "Failover gateway"
+    ],
+    "validation_indicators": [
+      "p95 < 400ms",
+      "5xx < 0.5%",
+      "checkout success rate > 99.5%"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "All alerts recovered",
+          "type": "validation",
+          "observations": {
+            "p95_ms": 320,
+            "error_rate": 0.3
+          }
+        },
+        "received_at": "2025-08-13T19:54:44.719522+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T19:54:44.745287Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T13:22:48.345236+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-14T13:22:48.347542Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T13:38:35.035653+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-14T13:38:35.040807Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:14:23.849533+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-14T14:14:23.852237Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:15:59.542379+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "time_window": {
+              "end": "2025-08-14T14:15:59.547443+00:00",
+              "from": "2025-08-13T03:20:10.604291+00:00"
+            },
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:20:13.324794+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-14T14:20:13.330811Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:24:45.487261+00:00"
+      },
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2001",
+              "PAY-451"
+            ],
+            "impact": "elevated latency, impacting checkout/payments",
+            "owners": {
+              "primary": "alice"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Checkout",
+                "customers_impacted": true,
+                "estimated_orders_affected": 1200
+              },
+              "datadog_monitors": [
+                {
+                  "name": "payments-api p95 latency > 800ms",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 12345
+                },
+                {
+                  "name": "payments-api 5xx rate > 3%",
+                  "tags": [
+                    "service:payments-api"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67890
+                }
+              ]
+            },
+            "incident": "Payments API latency spike",
+            "keywords": [
+              "SRE-2001",
+              "PAY-451",
+              "payments-api"
+            ],
+            "timeframe": {
+              "end": "2025-08-14T14:24:45.491858Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "alice",
+                "what": "Seeing SRE-2001 referenced in logs"
+              },
+              {
+                "who": "bob",
+                "what": "payments-api latency breaching"
+              },
+              {
+                "who": "bot",
+                "what": "Creating war room"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:14.926255+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:14.930486Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Heads up, checkout is slow. Anyone else seeing this?",
+        "user": "alice"
+      },
+      {
+        "text": "Graphs show p95 ~ 1.2s since 13:05Z on service=payments-api",
+        "user": "bob"
+      },
+      {
+        "text": "Recent deploy at 13:02Z touched gateway-client retry policy",
+        "user": "data"
+      },
+      {
+        "text": "JIRA? SRE-2001 opened to track. Also gateway timeouts tracked in PAY-451",
+        "user": "alice"
+      },
+      {
+        "text": "Error spikes align with external gateway 504s",
+        "user": "oncall"
+      },
+      {
+        "text": "Any active monitors? payments-api 5xx and p95 are red in Datadog",
+        "user": "bob"
+      },
+      {
+        "text": "Trying rollback of payments-api",
+        "user": "alice"
+      },
+      {
+        "text": "Post-rollback p95 trending down to 450ms",
+        "user": "oncall"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "service:payments-api"
+        ],
+        "metric": "trace.requests.p95",
+        "points": [
+          [
+            1755203223,
+            0.4
+          ],
+          [
+            1755203283,
+            0.5
+          ],
+          [
+            1755203343,
+            0.7
+          ],
+          [
+            1755203403,
+            0.9
+          ],
+          [
+            1755203463,
+            1.1
+          ],
+          [
+            1755203523,
+            1.2
+          ]
+        ]
+      },
+      {
+        "tags": [
+          "service:payments-api"
+        ],
+        "metric": "http.server.error_rate",
+        "points": [
+          [
+            1755203223,
+            0.01
+          ],
+          [
+            1755203283,
+            0.015
+          ],
+          [
+            1755203343,
+            0.02
+          ],
+          [
+            1755203403,
+            0.035
+          ],
+          [
+            1755203463,
+            0.05
+          ],
+          [
+            1755203523,
+            0.045
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "44444444-4444-4444-4444-444444444444",
+    "title": "Checkout service dependency timeout",
+    "description": "Downstream pricing-service timeouts cause checkout failures",
+    "services": [
+      "checkout-service",
+      "pricing-service"
+    ],
+    "keywords": [
+      "SRE-2004",
+      "checkout-service",
+      "pricing-service"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2004",
+        "fields": {
+          "status": {
+            "name": "To Do"
+          },
+          "summary": "Pricing timeouts"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "checkout 5xx > 1%",
+        "tags": [
+          "service:checkout-service"
+        ],
+        "status": "Alert",
+        "monitor_id": 45678
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Pricing response > 3s",
+        "user": "oncall"
+      }
+    ],
+    "active_alerts": [
+      "checkout 5xx"
+    ],
+    "impact_assessment": {
+      "drop_off": "3%",
+      "blast_radius": "Checkout",
+      "customers_impacted": true
+    },
+    "incident_steps": [
+      "Circuit break pricing",
+      "Apply static pricing",
+      "Notify finance"
+    ],
+    "validation_indicators": [
+      "checkout success > 99.5%"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2004"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "oncall"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "drop_off": "3%",
+                "blast_radius": "Checkout",
+                "customers_impacted": true
+              },
+              "datadog_monitors": [
+                {
+                  "name": "checkout 5xx > 1%",
+                  "tags": [
+                    "service:checkout-service"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 45678
+                }
+              ]
+            },
+            "incident": "Checkout service dependency timeout",
+            "keywords": [
+              "SRE-2004",
+              "checkout-service",
+              "pricing-service"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "oncall",
+                "what": "Pricing response > 3s"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:08.907662+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:08.909810Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Checkout 5xx climbing; pricing-service timeouts",
+        "user": "oncall"
+      },
+      {
+        "text": "Circuit breaker threshold reached",
+        "user": "alice"
+      },
+      {
+        "text": "Create SRE-2004 for tracking; implement static pricing fallback",
+        "user": "bob"
+      },
+      {
+        "text": "After circuit break, errors down, success up",
+        "user": "oncall"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "service:checkout-service"
+        ],
+        "metric": "http.server.error_rate",
+        "points": [
+          [
+            1755203223,
+            0.004
+          ],
+          [
+            1755203283,
+            0.006
+          ],
+          [
+            1755203343,
+            0.012
+          ],
+          [
+            1755203403,
+            0.02
+          ],
+          [
+            1755203463,
+            0.015
+          ],
+          [
+            1755203523,
+            0.008
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "55555555-5555-5555-5555-555555555555",
+    "title": "DB storage running hot",
+    "description": "RDS storage at 95% with high write latency",
+    "services": [
+      "accounts-db"
+    ],
+    "keywords": [
+      "SRE-2005",
+      "accounts-db"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2005",
+        "fields": {
+          "status": {
+            "name": "In Progress"
+          },
+          "summary": "RDS storage pressure"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "RDS free storage < 5%",
+        "tags": [
+          "db:accounts"
+        ],
+        "status": "Alert",
+        "monitor_id": 56789
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Snapshots growing since 10:00Z",
+        "user": "dbadmin"
+      }
+    ],
+    "active_alerts": [
+      "free storage"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Potential risk",
+      "write_latency_ms": 35,
+      "customers_impacted": false
+    },
+    "incident_steps": [
+      "Purge old snapshots",
+      "Increase storage",
+      "Enable compression"
+    ],
+    "validation_indicators": [
+      "free storage > 20%",
+      "write latency < 10ms"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2005"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "dbadmin"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Potential risk",
+                "write_latency_ms": 35,
+                "customers_impacted": false
+              },
+              "datadog_monitors": [
+                {
+                  "name": "RDS free storage < 5%",
+                  "tags": [
+                    "db:accounts"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 56789
+                }
+              ]
+            },
+            "incident": "DB storage running hot",
+            "keywords": [
+              "SRE-2005",
+              "accounts-db"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "dbadmin",
+                "what": "Snapshots growing since 10:00Z"
+              }
+            ],
+            "root_cause_hypotheses": [
+              {
+                "confidence": "low",
+                "hypothesis": "DB saturation / connection pool issue"
+              }
+            ]
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:09.731914+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:09.735813Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Free storage at 4.8% on accounts-db",
+        "user": "dbadmin"
+      },
+      {
+        "text": "Write latency up 35ms, enable compression?",
+        "user": "alice"
+      },
+      {
+        "text": "Purge old snapshots and increase storage",
+        "user": "oncall"
+      },
+      {
+        "text": "Post-changes free storage 22%, latency 8ms",
+        "user": "dbadmin"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "db:accounts"
+        ],
+        "metric": "aws.rds.free_storage_space_pct",
+        "points": [
+          [
+            1755203223,
+            0.11
+          ],
+          [
+            1755203283,
+            0.09
+          ],
+          [
+            1755203343,
+            0.07
+          ],
+          [
+            1755203403,
+            0.06
+          ],
+          [
+            1755203463,
+            0.048
+          ],
+          [
+            1755203523,
+            0.22
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "66666666-6666-6666-6666-666666666666",
+    "title": "Edge cache misconfiguration",
+    "description": "Bad header rule causing non-cacheable responses",
+    "services": [
+      "edge-cache",
+      "web-frontend"
+    ],
+    "keywords": [
+      "SRE-2006",
+      "edge-cache"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2006",
+        "fields": {
+          "status": {
+            "name": "Investigating"
+          },
+          "summary": "Cache miss spike"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "CDN hit ratio < 70%",
+        "tags": [
+          "service:edge-cache"
+        ],
+        "status": "Alert",
+        "monitor_id": 67891
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Hit ratio tanked after rule deploy",
+        "user": "web"
+      }
+    ],
+    "active_alerts": [
+      "cdn hit ratio"
+    ],
+    "impact_assessment": {
+      "ttfb_ms": 900,
+      "blast_radius": "Site performance",
+      "customers_impacted": true
+    },
+    "incident_steps": [
+      "Revert header rule",
+      "Purge cache",
+      "Warm key paths"
+    ],
+    "validation_indicators": [
+      "hit ratio > 90%",
+      "ttfb < 200ms"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2006"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "web"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "ttfb_ms": 900,
+                "blast_radius": "Site performance",
+                "customers_impacted": true
+              },
+              "datadog_monitors": [
+                {
+                  "name": "CDN hit ratio < 70%",
+                  "tags": [
+                    "service:edge-cache"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 67891
+                }
+              ]
+            },
+            "incident": "Edge cache misconfiguration",
+            "keywords": [
+              "SRE-2006",
+              "edge-cache"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "web",
+                "what": "Hit ratio tanked after rule deploy"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:10.723314+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:10.727102Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Hit ratio 55% after header rule change",
+        "user": "web"
+      },
+      {
+        "text": "Revert header, purge caches",
+        "user": "oncall"
+      },
+      {
+        "text": "SRE-2006 for tracking; warming key paths",
+        "user": "alice"
+      },
+      {
+        "text": "Hit ratio back to 92%",
+        "user": "web"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "service:edge-cache"
+        ],
+        "metric": "cdn.hit_ratio",
+        "points": [
+          [
+            1755203223,
+            92
+          ],
+          [
+            1755203283,
+            90
+          ],
+          [
+            1755203343,
+            88
+          ],
+          [
+            1755203403,
+            70
+          ],
+          [
+            1755203463,
+            55
+          ],
+          [
+            1755203523,
+            92
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "77777777-7777-7777-7777-777777777777",
+    "title": "Feature flag outage",
+    "description": "Flag provider outage affecting rollout logic",
+    "services": [
+      "feature-service",
+      "flag-provider"
+    ],
+    "keywords": [
+      "SRE-2007",
+      "feature-service"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2007",
+        "fields": {
+          "status": {
+            "name": "To Do"
+          },
+          "summary": "Flag provider down"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "feature-service error spike",
+        "tags": [
+          "service:feature-service"
+        ],
+        "status": "Alert",
+        "monitor_id": 78912
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Rollout paused",
+        "user": "pm"
+      }
+    ],
+    "active_alerts": [
+      "feature errors"
+    ],
+    "impact_assessment": {
+      "blast_radius": "New features disabled",
+      "customers_impacted": true
+    },
+    "incident_steps": [
+      "Force default values",
+      "Bypass provider",
+      "Notify stakeholders"
+    ],
+    "validation_indicators": [
+      "error rate normal",
+      "features enabled"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2007"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "pm"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "New features disabled",
+                "customers_impacted": true
+              },
+              "datadog_monitors": [
+                {
+                  "name": "feature-service error spike",
+                  "tags": [
+                    "service:feature-service"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 78912
+                }
+              ]
+            },
+            "incident": "Feature flag outage",
+            "keywords": [
+              "SRE-2007",
+              "feature-service"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "pm",
+                "what": "Rollout paused"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:11.582692+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:11.586972Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Feature adoption stalled; provider outage?",
+        "user": "pm"
+      },
+      {
+        "text": "Set defaults and bypass provider",
+        "user": "oncall"
+      },
+      {
+        "text": "Log SRE-2007 and communicate status",
+        "user": "alice"
+      },
+      {
+        "text": "Errors normalized after bypass",
+        "user": "pm"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "service:feature-service"
+        ],
+        "metric": "http.server.error_rate",
+        "points": [
+          [
+            1755203223,
+            0.003
+          ],
+          [
+            1755203283,
+            0.004
+          ],
+          [
+            1755203343,
+            0.007
+          ],
+          [
+            1755203403,
+            0.02
+          ],
+          [
+            1755203463,
+            0.025
+          ],
+          [
+            1755203523,
+            0.004
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "88888888-8888-8888-8888-888888888888",
+    "title": "Queue dead-letter surge",
+    "description": "DLQ growing due to schema mismatch",
+    "services": [
+      "ingest-worker",
+      "schema-registry"
+    ],
+    "keywords": [
+      "SRE-2008",
+      "ingest-worker"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2008",
+        "fields": {
+          "status": {
+            "name": "In Progress"
+          },
+          "summary": "Schema mismatch"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "DLQ size > 10k",
+        "tags": [
+          "service:ingest-worker"
+        ],
+        "status": "Alert",
+        "monitor_id": 89123
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "New field not backwards compatible",
+        "user": "data"
+      }
+    ],
+    "active_alerts": [
+      "dlq size"
+    ],
+    "impact_assessment": {
+      "blast_radius": "Async enrichment",
+      "customers_impacted": false
+    },
+    "incident_steps": [
+      "Hotfix consumer",
+      "Reprocess DLQ",
+      "Add schema evolution"
+    ],
+    "validation_indicators": [
+      "DLQ < 100"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2008"
+            ],
+            "impact": "Impact under analysis",
+            "owners": {
+              "primary": "data"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "blast_radius": "Async enrichment",
+                "customers_impacted": false
+              },
+              "datadog_monitors": [
+                {
+                  "name": "DLQ size > 10k",
+                  "tags": [
+                    "service:ingest-worker"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 89123
+                }
+              ]
+            },
+            "incident": "Queue dead-letter surge",
+            "keywords": [
+              "SRE-2008",
+              "ingest-worker"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "data",
+                "what": "New field not backwards compatible"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:12.460936+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:12.463206Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "DLQ at 12k messages; schema change broke consumers",
+        "user": "data"
+      },
+      {
+        "text": "Hotfix; add schema evolution and reprocess",
+        "user": "oncall"
+      },
+      {
+        "text": "Tracking in SRE-2008",
+        "user": "alice"
+      },
+      {
+        "text": "DLQ down to 50 after reprocess",
+        "user": "data"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "queue:ingest"
+        ],
+        "metric": "queue.dlq.size",
+        "points": [
+          [
+            1755203223,
+            200
+          ],
+          [
+            1755203283,
+            500
+          ],
+          [
+            1755203343,
+            1500
+          ],
+          [
+            1755203403,
+            5000
+          ],
+          [
+            1755203463,
+            12000
+          ],
+          [
+            1755203523,
+            50
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "99999999-9999-9999-9999-999999999999",
+    "title": "Search cluster split brain",
+    "description": "Elasticsearch quorum lost after AZ issue",
+    "services": [
+      "search-cluster"
+    ],
+    "keywords": [
+      "SRE-2009",
+      "search"
+    ],
+    "jira_payloads": [
+      {
+        "key": "SRE-2009",
+        "fields": {
+          "status": {
+            "name": "Investigating"
+          },
+          "summary": "Split brain"
+        }
+      }
+    ],
+    "datadog_payloads": [
+      {
+        "name": "ES cluster status red",
+        "tags": [
+          "cluster:search"
+        ],
+        "status": "Alert",
+        "monitor_id": 91234
+      }
+    ],
+    "slack_conversation": [
+      {
+        "text": "Shard failures across AZ-b",
+        "user": "search"
+      }
+    ],
+    "active_alerts": [
+      "cluster red"
+    ],
+    "impact_assessment": {
+      "error_rate": 0.6,
+      "blast_radius": "Search",
+      "customers_impacted": true
+    },
+    "incident_steps": [
+      "Disable writes",
+      "Restore quorum",
+      "Reroute shards"
+    ],
+    "validation_indicators": [
+      "cluster green"
+    ],
+    "updates": [
+      {
+        "payload": {
+          "note": "Slack conversation summarized for NeMo",
+          "type": "summary",
+          "summary": {
+            "jira": [
+              "SRE-2009"
+            ],
+            "impact": "increased error rate",
+            "owners": {
+              "primary": "search"
+            },
+            "status": "Unknown",
+            "metrics": {
+              "impact": {
+                "error_rate": 0.6,
+                "blast_radius": "Search",
+                "customers_impacted": true
+              },
+              "datadog_monitors": [
+                {
+                  "name": "ES cluster status red",
+                  "tags": [
+                    "cluster:search"
+                  ],
+                  "status": "Alert",
+                  "monitor_id": 91234
+                }
+              ]
+            },
+            "incident": "Search cluster split brain",
+            "keywords": [
+              "SRE-2009",
+              "search"
+            ],
+            "timeframe": {
+              "end": "2025-08-13T03:20:10.604291Z",
+              "start": "2025-08-13T03:20:10.604291Z"
+            },
+            "key_events": [
+              {
+                "who": "search",
+                "what": "Shard failures across AZ-b"
+              }
+            ],
+            "root_cause_hypotheses": []
+          },
+          "payload_version": 1
+        },
+        "received_at": "2025-08-14T14:37:13.253353+00:00"
+      }
+    ],
+    "created_at": "2025-08-13T03:20:10.604291Z",
+    "updated_at": "2025-08-14T14:37:13.257561Z",
+    "slack_conversation_expanded": [
+      {
+        "text": "Cluster red; quorum lost in AZ-b",
+        "user": "search"
+      },
+      {
+        "text": "Disable writes; restore quorum",
+        "user": "oncall"
+      },
+      {
+        "text": "Reroute shards; SRE-2009 for tracking",
+        "user": "alice"
+      },
+      {
+        "text": "Cluster green after reroute",
+        "user": "search"
+      }
+    ],
+    "datadog_timeseries": [
+      {
+        "tags": [
+          "cluster:search"
+        ],
+        "metric": "es.cluster.health.red",
+        "points": [
+          [
+            1755203223,
+            0
+          ],
+          [
+            1755203283,
+            0
+          ],
+          [
+            1755203343,
+            0
+          ],
+          [
+            1755203403,
+            1
+          ],
+          [
+            1755203463,
+            1
+          ],
+          [
+            1755203523,
+            0
+          ]
+        ]
+      }
+    ]
+  }
+]

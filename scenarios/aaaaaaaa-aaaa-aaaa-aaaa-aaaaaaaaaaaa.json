@@ -1,0 +1,163 @@
+{
+  "scenario_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "title": "Billing job missed window",
+  "description": "Cron did not execute due to scheduler drift",
+  "services": [
+    "billing-job",
+    "scheduler"
+  ],
+  "keywords": [
+    "SRE-2010",
+    "billing-job"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2010",
+      "fields": {
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Missed billing run"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "billing-job did not run",
+      "tags": [
+        "job:billing"
+      ],
+      "status": "Alert",
+      "monitor_id": 93456
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Invoices delayed",
+      "user": "finops"
+    }
+  ],
+  "active_alerts": [
+    "job missed"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Invoicing",
+    "revenue_delay_usd": 150000,
+    "customers_impacted": true
+  },
+  "incident_steps": [
+    "Run job manually",
+    "Fix scheduler drift",
+    "Add safeguard"
+  ],
+  "validation_indicators": [
+    "all invoices generated"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2010"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "finops"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Invoicing",
+              "revenue_delay_usd": 150000,
+              "customers_impacted": true
+            },
+            "datadog_monitors": [
+              {
+                "name": "billing-job did not run",
+                "tags": [
+                  "job:billing"
+                ],
+                "status": "Alert",
+                "monitor_id": 93456
+              }
+            ]
+          },
+          "incident": "Billing job missed window",
+          "keywords": [
+            "SRE-2010",
+            "billing-job"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "finops",
+              "what": "Invoices delayed"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:14.098718+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:14.102758Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Invoices missing for yesterday",
+      "user": "finops"
+    },
+    {
+      "text": "Scheduler drifted; job missed window",
+      "user": "oncall"
+    },
+    {
+      "text": "Run manual job; create SRE-2010",
+      "user": "alice"
+    },
+    {
+      "text": "Invoices generated; revenue on track",
+      "user": "finops"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "job:billing"
+      ],
+      "metric": "jobs.run.billing.count",
+      "points": [
+        [
+          1755203223,
+          1
+        ],
+        [
+          1755203283,
+          1
+        ],
+        [
+          1755203343,
+          1
+        ],
+        [
+          1755203403,
+          0
+        ],
+        [
+          1755203463,
+          0
+        ],
+        [
+          1755203523,
+          1
+        ]
+      ]
+    }
+  ]
+}

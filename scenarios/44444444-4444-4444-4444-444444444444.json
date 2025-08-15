@@ -1,0 +1,165 @@
+{
+  "scenario_id": "44444444-4444-4444-4444-444444444444",
+  "title": "Checkout service dependency timeout",
+  "description": "Downstream pricing-service timeouts cause checkout failures",
+  "services": [
+    "checkout-service",
+    "pricing-service"
+  ],
+  "keywords": [
+    "SRE-2004",
+    "checkout-service",
+    "pricing-service"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2004",
+      "fields": {
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Pricing timeouts"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "checkout 5xx > 1%",
+      "tags": [
+        "service:checkout-service"
+      ],
+      "status": "Alert",
+      "monitor_id": 45678
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Pricing response > 3s",
+      "user": "oncall"
+    }
+  ],
+  "active_alerts": [
+    "checkout 5xx"
+  ],
+  "impact_assessment": {
+    "drop_off": "3%",
+    "blast_radius": "Checkout",
+    "customers_impacted": true
+  },
+  "incident_steps": [
+    "Circuit break pricing",
+    "Apply static pricing",
+    "Notify finance"
+  ],
+  "validation_indicators": [
+    "checkout success > 99.5%"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2004"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "oncall"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "drop_off": "3%",
+              "blast_radius": "Checkout",
+              "customers_impacted": true
+            },
+            "datadog_monitors": [
+              {
+                "name": "checkout 5xx > 1%",
+                "tags": [
+                  "service:checkout-service"
+                ],
+                "status": "Alert",
+                "monitor_id": 45678
+              }
+            ]
+          },
+          "incident": "Checkout service dependency timeout",
+          "keywords": [
+            "SRE-2004",
+            "checkout-service",
+            "pricing-service"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "oncall",
+              "what": "Pricing response > 3s"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:08.907662+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:08.909810Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Checkout 5xx climbing; pricing-service timeouts",
+      "user": "oncall"
+    },
+    {
+      "text": "Circuit breaker threshold reached",
+      "user": "alice"
+    },
+    {
+      "text": "Create SRE-2004 for tracking; implement static pricing fallback",
+      "user": "bob"
+    },
+    {
+      "text": "After circuit break, errors down, success up",
+      "user": "oncall"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "service:checkout-service"
+      ],
+      "metric": "http.server.error_rate",
+      "points": [
+        [
+          1755203223,
+          0.004
+        ],
+        [
+          1755203283,
+          0.006
+        ],
+        [
+          1755203343,
+          0.012
+        ],
+        [
+          1755203403,
+          0.02
+        ],
+        [
+          1755203463,
+          0.015
+        ],
+        [
+          1755203523,
+          0.008
+        ]
+      ]
+    }
+  ]
+}

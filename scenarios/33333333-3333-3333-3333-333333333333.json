@@ -1,0 +1,168 @@
+{
+  "scenario_id": "33333333-3333-3333-3333-333333333333",
+  "title": "Kafka consumer lag on orders-stream",
+  "description": "Consumer lag increasing due to downstream DB contention",
+  "services": [
+    "orders-worker",
+    "orders-db"
+  ],
+  "keywords": [
+    "SRE-2003",
+    "orders-worker"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2003",
+      "fields": {
+        "status": {
+          "name": "Investigating"
+        },
+        "summary": "Consumer lag"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "orders-worker consumer lag > 200k",
+      "tags": [
+        "service:orders-worker"
+      ],
+      "status": "Alert",
+      "monitor_id": 34567
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "orders-stream lag climbing",
+      "user": "bob"
+    }
+  ],
+  "active_alerts": [
+    "consumer lag"
+  ],
+  "impact_assessment": {
+    "blast_radius": "Async fulfillment",
+    "customers_impacted": false,
+    "eta_delayed_orders_min": 45
+  },
+  "incident_steps": [
+    "Scale consumers",
+    "Investigate DB locks",
+    "Enable backpressure"
+  ],
+  "validation_indicators": [
+    "lag < 5k",
+    "DB lock waits stable"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2003"
+          ],
+          "impact": "Impact under analysis",
+          "owners": {
+            "primary": "bob"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "blast_radius": "Async fulfillment",
+              "customers_impacted": false,
+              "eta_delayed_orders_min": 45
+            },
+            "datadog_monitors": [
+              {
+                "name": "orders-worker consumer lag > 200k",
+                "tags": [
+                  "service:orders-worker"
+                ],
+                "status": "Alert",
+                "monitor_id": 34567
+              }
+            ]
+          },
+          "incident": "Kafka consumer lag on orders-stream",
+          "keywords": [
+            "SRE-2003",
+            "orders-worker"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "bob",
+              "what": "orders-stream lag climbing"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:08.045168+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:08.049150Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Consumer lag on orders-stream approaching 250k",
+      "user": "bob"
+    },
+    {
+      "text": "orders-db lock waits up; writes delayed",
+      "user": "alice"
+    },
+    {
+      "text": "Scale workers and reduce batch size",
+      "user": "oncall"
+    },
+    {
+      "text": "SRE-2003 tracks the lag incident",
+      "user": "bob"
+    },
+    {
+      "text": "Lag receding to 4k after scale + DB tuning",
+      "user": "alice"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "topic:orders"
+      ],
+      "metric": "kafka.consumer_lag",
+      "points": [
+        [
+          1755203223,
+          15000
+        ],
+        [
+          1755203283,
+          30000
+        ],
+        [
+          1755203343,
+          120000
+        ],
+        [
+          1755203403,
+          210000
+        ],
+        [
+          1755203463,
+          250000
+        ],
+        [
+          1755203523,
+          180000
+        ]
+      ]
+    }
+  ]
+}

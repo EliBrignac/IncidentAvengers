@@ -1,0 +1,162 @@
+{
+  "scenario_id": "99999999-9999-9999-9999-999999999999",
+  "title": "Search cluster split brain",
+  "description": "Elasticsearch quorum lost after AZ issue",
+  "services": [
+    "search-cluster"
+  ],
+  "keywords": [
+    "SRE-2009",
+    "search"
+  ],
+  "jira_payloads": [
+    {
+      "key": "SRE-2009",
+      "fields": {
+        "status": {
+          "name": "Investigating"
+        },
+        "summary": "Split brain"
+      }
+    }
+  ],
+  "datadog_payloads": [
+    {
+      "name": "ES cluster status red",
+      "tags": [
+        "cluster:search"
+      ],
+      "status": "Alert",
+      "monitor_id": 91234
+    }
+  ],
+  "slack_conversation": [
+    {
+      "text": "Shard failures across AZ-b",
+      "user": "search"
+    }
+  ],
+  "active_alerts": [
+    "cluster red"
+  ],
+  "impact_assessment": {
+    "error_rate": 0.6,
+    "blast_radius": "Search",
+    "customers_impacted": true
+  },
+  "incident_steps": [
+    "Disable writes",
+    "Restore quorum",
+    "Reroute shards"
+  ],
+  "validation_indicators": [
+    "cluster green"
+  ],
+  "updates": [
+    {
+      "payload": {
+        "note": "Slack conversation summarized for NeMo",
+        "type": "summary",
+        "summary": {
+          "jira": [
+            "SRE-2009"
+          ],
+          "impact": "increased error rate",
+          "owners": {
+            "primary": "search"
+          },
+          "status": "Unknown",
+          "metrics": {
+            "impact": {
+              "error_rate": 0.6,
+              "blast_radius": "Search",
+              "customers_impacted": true
+            },
+            "datadog_monitors": [
+              {
+                "name": "ES cluster status red",
+                "tags": [
+                  "cluster:search"
+                ],
+                "status": "Alert",
+                "monitor_id": 91234
+              }
+            ]
+          },
+          "incident": "Search cluster split brain",
+          "keywords": [
+            "SRE-2009",
+            "search"
+          ],
+          "timeframe": {
+            "end": "2025-08-13T03:20:10.604291Z",
+            "start": "2025-08-13T03:20:10.604291Z"
+          },
+          "key_events": [
+            {
+              "who": "search",
+              "what": "Shard failures across AZ-b"
+            }
+          ],
+          "root_cause_hypotheses": []
+        },
+        "payload_version": 1
+      },
+      "received_at": "2025-08-14T14:37:13.253353+00:00"
+    }
+  ],
+  "created_at": "2025-08-13T03:20:10.604291Z",
+  "updated_at": "2025-08-14T14:37:13.257561Z",
+  "slack_conversation_expanded": [
+    {
+      "text": "Cluster red; quorum lost in AZ-b",
+      "user": "search"
+    },
+    {
+      "text": "Disable writes; restore quorum",
+      "user": "oncall"
+    },
+    {
+      "text": "Reroute shards; SRE-2009 for tracking",
+      "user": "alice"
+    },
+    {
+      "text": "Cluster green after reroute",
+      "user": "search"
+    }
+  ],
+  "datadog_timeseries": [
+    {
+      "tags": [
+        "cluster:search"
+      ],
+      "metric": "es.cluster.health.red",
+      "points": [
+        [
+          1755203223,
+          0
+        ],
+        [
+          1755203283,
+          0
+        ],
+        [
+          1755203343,
+          0
+        ],
+        [
+          1755203403,
+          1
+        ],
+        [
+          1755203463,
+          1
+        ],
+        [
+          1755203523,
+          0
+        ]
+      ]
+    }
+  ]
+}
